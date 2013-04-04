@@ -4,8 +4,9 @@
 
 #include "input_parser.h"
 #include "get_input.h"
+#include "globals.h"
 
-void parse_states(char* string, state* states)
+void parse_states(char* string)
 {
 	int end_pos = strlen(string);
 	
@@ -17,8 +18,7 @@ void parse_states(char* string, state* states)
 	char current_varname[MAX_VARIABLE_NAME_SIZE];
 	int varname_pointer = 0;
 	int find_var_index;
-	int cycles = 0;
-	
+	cycles = 0;
 	
 	for(int i=0; i<=end_pos; i++)
 	{
@@ -68,16 +68,21 @@ void parse_states(char* string, state* states)
 		}
 	}
 	
-	
-	memcpy(states[0].names,variable_names,sizeof(variable_names));
-	memcpy(states[0].states,variable_states,sizeof(variable_states));
-	states[0].varcount = current_var;
+	for(int i=0;i<cycles; i++)
+	{
+		memcpy(states[i].names,variable_names,sizeof(variable_names));
+		memcpy(states[i].states,variable_states,sizeof(variable_states));
+		states[i].varcount = current_var;
+	}
 	
 	for(int j = 0; j<states[0].varcount; j++)
 	{
-		printf("%s : %i \n", states[0].names[j],states[0].states[j]);
+		//printf("%s : %i \n", states[0].names[j],states[0].states[j]);
 	}
-	printf("cycles: %i \n",cycles);
+	//printf("cycles: %i \n",cycles);
+	
+	parse_transitions(string,variable_names);
+	
 	
 }
 
@@ -94,18 +99,69 @@ int find_exist_var(char* var, char exist_vars[MAX_VARIABLES][MAX_VARIABLE_NAME_S
 	return -1;
 }
 
-void parse_transitions(char* string,transition* transitions)
+void parse_transitions(char* string, char exist_vars[MAX_VARIABLES][MAX_VARIABLE_NAME_SIZE])
 {
+	
+	int transition_count = 0;
 	char *current_transition;
 	
-	while((current_transition = strsep(string,TRANSITION_DELIM)) != NULL)
+	while((current_transition = strsep(&string,TRANSITION_DELIM)) != NULL)
 	{
-		for(int j = 0; j<strlen(current_transition); j++)
+		short curr_state = 1;
+		char curr_name[MAX_VARIABLE_NAME_SIZE];
+		int pointer = 0;
+		int find_index = 0;
+		int curr_var = 0;
+		transitions[transition_count].changes=0;
+		//printf("------\n");
+		for(unsigned int j = 0; j<strlen(current_transition); j++)
 		{
+			
 			switch(current_transition[j])
 			{
+				case '!':
+				{
+					curr_state = 0;
+					continue;
+					break;
+				}
+				
+				case '(':
+				case ')':
+				case ',':
+				{
+					
+					find_index = find_exist_var(curr_name,exist_vars,MAX_VARIABLES);
+						
+					transitions[transition_count].var_indexes[curr_var] = find_index;
+					transitions[transition_count].states[curr_var] = curr_state;
+					transitions[transition_count].changes++;
+					//printf("%i : %i \n",find_index,curr_state);
+					curr_var++;
+					
+					strcpy(curr_name,"");
+					curr_state = 1;
+					pointer = 0;
+					continue;
+					break;
+				}
+				default:
+				{
+					curr_name[pointer++] = current_transition[j];
+					break;
+				}
 			}
 		}
+		
+		transition_count++;
 	}
 	
+}
+
+void add_transition(int st_index, int tr_index)
+{
+	for(int i=0; i<transitions[tr_index].changes; i++)
+	{
+		states[st_index].states[transitions[tr_index].var_indexes[i]] = transitions[tr_index].states[i];
+	}
 }

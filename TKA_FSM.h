@@ -11,4 +11,8 @@ typedef struct
 {
 	int var_indexes[MAX_TRANSITIONS];
 	short states[MAX_TRANSITIONS];
+	int changes;
 } transition;
+
+void show_cyclogramm(short);
+void build_states_matrix(void);
