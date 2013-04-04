@@ -1,0 +1,40 @@
+[file_prefs]
+final_new_line=true
+ensure_convert_new_lines=false
+strip_trailing_spaces=false
+replace_tabs=false
+
+[indentation]
+indent_width=4
+indent_type=1
+indent_hard_tab_width=8
+detect_indent=false
+detect_indent_width=false
+indent_mode=2
+
+[project]
+name=TKA_FSM
+base_path=/home/mihawww/github/TKA_FSM
+description=
+file_patterns=
+
+[long line marker]
+long_line_behaviour=1
+long_line_column=72
+
+[files]
+current_page=0
+FILE_NAME_0=83;C;0;16;1;1;0;%2Fhome%2Fmihawww%2Fgithub%2FTKA_FSM%2FTKA_FSM.c;0;4
+FILE_NAME_1=0;C;0;16;1;1;0;%2Fhome%2Fmihawww%2Fgithub%2FTKA_FSM%2FTKA_FSM.h;0;4
+FILE_NAME_2=199;C;0;16;1;1;0;%2Fhome%2Fmihawww%2Fgithub%2FTKA_FSM%2Fget_input.h;0;4
+FILE_NAME_3=428;C;0;16;1;1;0;%2Fhome%2Fmihawww%2Fgithub%2FTKA_FSM%2Fget_input.c;0;4
+FILE_NAME_4=101;None;0;16;1;1;0;%2Fhome%2Fmihawww%2Fgithub%2FTKA_FSM%2Finput.tka;0;4
+
+[build-menu]
+CFT_00_LB=_Скомпилировать
+CFT_00_CM=gcc *.c -o TKA_FSM -Wextra -std=c99
+CFT_00_WD=
+CFT_01_LB=_Сборка
+CFT_01_CM=gcc -Wextra -o "%e" "%f" -std=c99
+CFT_01_WD=
+filetypes=C;
