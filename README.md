@@ -1,4 +1,4 @@
 TKA_FSM
 =======
 
-Utility for finite-state automaton
+Calculator for synthesis Finite-State Machines
